@@ -21,7 +21,7 @@ class Game_2(QMainWindow):
         self.Camera = Camera()
         self.Serial = SerialComm()
 
-        _ = self.Serial.open('/dev/tty/USB0') # Only for Pi. Use virtual ports to run on lappy
+        _ = self.Serial.open('COM3') # Only for Pi. Use virtual ports to run on lappy
 
         self.add_button.pressed.connect(lambda: self.add_or_remove_row('add'))
         self.remove_button.pressed.connect(lambda: self.add_or_remove_row('remove'))

@@ -87,10 +87,10 @@ class Game_1(QMainWindow):
             frame = self.Camera.overlay_point(frame, self.target_point)
 
             self.display_frame(frame)
-
-            if np.linalg.norm(pos - self.target_point) <= 5:
-                self.target_point = self.RNG()
-                self.score_spinbox.setValue(self.score_spinbox.value() + 1)
+            if pos is not None:
+                if np.linalg.norm(pos - self.target_point) <= 5:
+                    self.target_point = self.RNG()
+                    self.score_spinbox.setValue(self.score_spinbox.value() + 1)
 
         else:
             self.start_button.setCheckState(False)
