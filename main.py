@@ -85,7 +85,7 @@ class MainWindow(QMainWindow):
 
     def connect_timer(self):
         self.timer = QTimer()
-        self.timer.start(33)
+        self.timer.start(60)
         self.camera_checkbox.stateChanged.connect(self.Camera_Enabled)
         self.joystick_checkbox.stateChanged.connect(self.Joy_Enabled)
 

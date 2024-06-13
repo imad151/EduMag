@@ -9,6 +9,7 @@ import numpy as np
 from Model.EduMag import EduMag
 from Model.Joystick import Joystick
 from Model.Camera import Camera
+from Model.Serial_Comm import SerialComm
 
 
 class Game_1(QMainWindow):
@@ -24,6 +25,8 @@ class Game_1(QMainWindow):
         self.timer = QTimer()
         self.setup_timer()
 
+        _ = self.Serial.open('/dev/tty/USB0') # Only for Pi. Use virtual ports to run on lappy
+
         self.start_button.stateChanged.connect(self.start_game)
 
 
@@ -33,7 +36,6 @@ class Game_1(QMainWindow):
         self.theta_spinbox.valueChanged.connect(self.Compute_Currents)
 
         # Joystick
-        self.joystick = Joystick()
         self.timer.timeout.connect(self.Joy_Enabled)
 
         # Camera
@@ -46,6 +48,8 @@ class Game_1(QMainWindow):
     def initialize_classes(self):
         self.Edumag = EduMag()
         self.Camera = Camera()
+        self.joystick = Joystick()
+        self.Serial = SerialComm()
 
     def setup_timer(self):
         self.timer.start(30)
@@ -63,8 +67,6 @@ class Game_1(QMainWindow):
             self.time_spinbox.setValue(60)
             self.B_spinbox.setValue(0)
             self.F_spinbox.setValue(0)
-            
-
 
     def RNG(self, max_distance=40):
 
@@ -120,7 +122,13 @@ class Game_1(QMainWindow):
         self.F_spinbox.setMaximum(max_current)
         self.F_spinbox.setSingleStep(max_current / 15)
         I = self.Edumag.SetFieldForce(self.B_spinbox.value(), self.F_spinbox.value(), self.theta_spinbox.value())
-        print(I)
+        self.send_currents(I)
+
+    def send_currents(self, I):
+        try:
+            self.Serial.send(I)
+        except:
+            pass
 
     def connect_angle_buttons(self):
         self.angle_buttons = [self.angle_0, self.angle_45, self.angle_90, self.angle_135,
