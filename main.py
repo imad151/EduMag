@@ -45,7 +45,6 @@ class MainWindow(QMainWindow):
         self.game_2_instance = None
         self.game1_button.pressed.connect(lambda: self.start_game('1'))
         self.game2_button.pressed.connect(lambda: self.start_game('2'))
-
     def start_game(self, game):
         if self.current_game:
             self.current_game.close()
@@ -145,10 +144,8 @@ class MainWindow(QMainWindow):
 
     def plot_vecfield(self, fig):
         if not self.joystick_checkbox.isChecked():
-            fig.canvas.draw()
-            width, height = fig.canvas.get_width_height()
             self.vec_scene.clear()
-            self.vec_scene.addItem(QGraphicsPixmapItem(QPixmap.fromImage(QImage(fig.canvas.buffer_rgba(), width, height, QImage.Format_RGBA8888))))
+            self.vec_scene.addWidget(fig)
         else:
             self.vec_view.hide()
             self.label_13.hide()
